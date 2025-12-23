@@ -1,0 +1,114 @@
+#ifndef CSC_CONFIGURATION
+#define CSC_CONFIGURATION
+
+//#define CSC_CONFIG_DEFAULT
+#define CSC_CONFIG_WINDOWS_NATIVE
+
+#define CSC_ARCH_8BIT 0x8
+#define CSC_ARCH_16BIT 0x10
+#define CSC_ARCH_32BIT 0x20
+#define CSC_ARCH_64BIT 0x40
+#define CSC_ARCH CSC_ARCH_64BIT
+
+#ifdef CSC_CONFIG_DEFAULT
+
+#define CSCAPI
+#define CSCMETHOD
+
+#define CONST const
+
+#define _In_
+#define _In_opt_
+#define _Inout_
+#define _Out_
+#define _Out_opt_
+
+#define _When_(x)
+
+#if CSC_ARCH == CSC_ARCH_8BIT
+typedef unsigned char CSC_POINTER_TYPE;
+#elif CSC_ARCH == CSC_ARCH_16BIT
+typedef unsigned short CSC_POINTER_TYPE;
+#elif CSC_ARCH == CSC_ARCH_32BIT
+typedef unsigned long CSC_POINTER_TYPE;
+#elif CSC_ARCH == CSC_ARCH_64BIT
+typedef unsigned long long CSC_POINTER_TYPE;
+#else
+typedef unsigned long long CSC_POINTER_TYPE;
+#endif
+
+typedef unsigned char CSC_CHAR;
+typedef unsigned short CSC_WCHAR;
+
+typedef unsigned char CSC_BYTE;
+typedef unsigned short CSC_WORD;
+typedef unsigned long CSC_DWORD;
+typedef unsigned long long CSC_QWORD;
+
+typedef void* CSC_PVOID;
+typedef CONST void* CSC_PCVOID;
+
+typedef CSC_POINTER_TYPE CSC_SIZE_T;
+
+typedef signed long CSC_STATUS;
+typedef unsigned char CSC_BOOLEAN;
+
+#define CSC_STATUS_SUCCESS (CSC_STATUS)0
+#define CSC_STATUS_GENERAL_FAILURE (CSC_STATUS)-1
+#define CSC_STATUS_INVALID_PARAMETER (CSC_STATUS)-2
+#define CSC_STATUS_INVALID_HANDLE (CSC_STATUS)-3
+#define CSC_STATUS_MEMORY_NOT_ALLOCATED (CSC_STATUS)-4
+
+#define NULL (CSC_PVOID)0
+
+#define FALSE (CSC_BOOLEAN)0
+#define TRUE (CSC_BOOLEAN)1
+
+#define CSC_MEMORY_UTILS_USE_RECURSION FALSE
+#define CSC_MEMORY_UTILS_USE_SIZE_BASED_OPTIMIZATION FALSE
+
+#endif
+
+#ifdef CSC_CONFIG_WINDOWS_NATIVE
+
+#include "../System/peb.h"
+
+#define CSCAPI WINAPI
+#define CSCMETHOD FASTCALL
+
+#ifdef _WIN64
+#define CSC_ARCH CSC_ARCH_64BIT
+typedef QWORD CSC_POINTER_TYPE;
+#else
+#define CSC_ARCH CSC_ARCH_32BIT
+typedef DWORD CSC_POINTER_TYPE;
+#endif
+
+typedef CHAR CSC_CHAR;
+typedef WCHAR CSC_WCHAR;
+
+typedef BYTE CSC_BYTE;
+typedef WORD CSC_WORD;
+typedef DWORD CSC_DWORD;
+typedef QWORD CSC_QWORD;
+
+typedef PVOID CSC_PVOID;
+typedef const void* CSC_PCVOID;
+
+typedef SIZE_T CSC_SIZE_T;
+
+typedef NTSTATUS CSC_STATUS;
+typedef BOOLEAN CSC_BOOLEAN;
+
+#define CSC_STATUS_SUCCESS STATUS_SUCCESS
+#define CSC_STATUS_GENERAL_FAILURE STATUS_ACCESS_DENIED
+#define CSC_STATUS_INVALID_PARAMETER STATUS_INVALID_PARAMETER
+#define CSC_STATUS_INVALID_HANDLE STATUS_INVALID_HANDLE
+#define CSC_STATUS_MEMORY_NOT_ALLOCATED STATUS_MEMORY_NOT_ALLOCATED
+
+#define CSC_MEMORY_UTILS_USE_RECURSION FALSE
+#define CSC_MEMORY_UTILS_USE_SIZE_BASED_OPTIMIZATION TRUE
+
+#endif
+
+#endif CSC_CONFIGURATION
